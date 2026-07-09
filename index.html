@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>学習のすゝめ ― トランザクション（不可分な一連の流れ）</title>
+<link rel="stylesheet" href="assets/tx.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="eyebrow"><span class="dot"></span>勉強法シリーズ ／ トランザクション</span>
+    <h1 class="title">トランザクション<span class="accent"> ― 不可分な一連の流れ</span></h1>
+    <p class="lead">勉強を「気合と根性」で回すのをやめ、<strong>始まり（トリガー）</strong>と<strong>終わり（報酬）</strong>ではさんだ一続きの流れを、<strong>1件のトランザクション</strong>として扱う勉強法です。フォルダをクリックして、実際の組み方を見てみてください。</p>
+    <p class="src-line">原資料：<b>学習のすゝめ ― 不可分な一連の流れ</b>（Team ATLAS, CERN, 2018 ／ 小船幹生）</p>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn" id="btn-open">すべて開く</button>
+    <button class="btn" id="btn-close">すべて閉じる</button>
+    <div class="legend">
+      <span style="font-weight:700;color:var(--ink-soft)">流れの部品</span>
+      <span class="chip"><span class="sw trig"></span>トリガー</span>
+      <span class="chip"><span class="sw tx"></span>フェーズ</span>
+      <span class="chip"><span class="sw rew"></span>報酬</span>
+    </div>
+  </div>
+
+  <!-- ── トランザクションとは？ ── -->
+  <section class="intro">
+    <div class="intro-inner">
+      <h2 class="intro-h"><span class="q">?</span>トランザクションとは？</h2>
+      <p class="def">もともとは<em>データベースの用語</em>で、<em>途中で分けられない一続きの処理</em>のことです。勉強でも同じように、いくつかの作業を<em>一続きのまとまり</em>として扱い、最後までやり切って初めて「完了（コミット）」とみなします。<em>気合や根性</em>ではなく、<em>仕組み</em>で回すのが狙いです。</p>
+      <div class="intro-grid">
+        <div class="ic">
+          <span class="no">1</span>
+          <b>トリガーと報酬を用意する</b>
+          <p><em>始まりの合図</em>（メガネをかける・図書館へ行く など）と、<em>終わりのごほうび</em>を先に決めます。合図があると、始めるかどうかで迷う時間を減らせます。ごほうびまで決めておくと、区切りもつけやすくなります。</p>
+        </div>
+        <div class="ic">
+          <span class="no">2</span>
+          <b>時間・順番・内容をセットする</b>
+          <p>各<em>フェーズ</em>で「どの教科を・どの教材で・何分」やるかを、<em>始める前に決めておきます</em>。迷う時間が減り、最初の一手を出しやすくなります。</p>
+        </div>
+        <div class="ic">
+          <span class="no">3</span>
+          <b>不可分なまとまりとして扱う</b>
+          <p>始めたら、別の教科・通知・用事を<em>差し込みません</em>。途中でSNSを挟むと、その流れは中断（<em>ロールバック</em>）。1件として完了せず、積み上げも残りません。ですから一続きで走り切り、<em>やり切って完了（コミット）</em>とします。</p>
+        </div>
+      </div>
+      <div class="domino-demo">
+        <p class="dd-head"><b>やってみる：</b>「引き金」を引くと、フェーズが順に倒れて報酬まで一気に流れます。<b>一度始めたら、途中で切らずにやり切る</b>——これが「不可分」の感覚です。</p>
+        <div class="dd-stage" id="ddStage">
+          <button class="dd-trigger" id="ddTrigger" type="button"><span class="di">⚡</span>引き金を引く</button>
+          <div class="dd-track">
+            <div class="dd-domino" data-k="0"><span>英語</span></div>
+            <div class="dd-domino" data-k="1"><span>数学</span></div>
+            <div class="dd-domino" data-k="2"><span>古文</span></div>
+            <div class="dd-reward" id="ddReward" aria-hidden="true">🎁</div>
+          </div>
+          <button class="dd-reset" id="ddReset" type="button">リセット</button>
+        </div>
+      </div>
+      <p class="intro-foot"><b>読み方：</b>下のフォルダは、原資料にある4つのトランザクション例です。開くと「トリガー → フェーズ → 報酬」の流れと、各フェーズの<b>時間の配分</b>が見えます。フェーズをクリックすると、教材やねらいの詳しい説明が出ます。</p>
+    </div>
+  </section>
+
+  <!-- ── 実例(フォルダツリー) ── -->
+  <section class="section" style="margin-top:26px;">
+    <div class="sec-head">
+      <span class="kicker">実例</span>
+      <h2>4つのトランザクション</h2>
+      <span class="sub">時間の長さが違う組み方を見る</span>
+    </div>
+  </section>
+  <div class="sheet-wrap">
+    <div class="sheet">
+      <div class="margin-dots top"></div>
+      <div id="app"></div>
+      <div class="margin-dots bottom"></div>
+    </div>
+  </div>
+
+  <!-- ── 週間プラン ── -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="kicker">週間プラン</span>
+      <h2>教科配置</h2>
+      <span class="sub">1週間のどこに何を置くか</span>
+    </div>
+    <div class="panelcard">
+      <div class="wk-flow">
+        <button type="button" class="bubble long" data-jump="long">ロング<small>5〜6時間</small></button>
+        <span class="swap">⇄</span>
+        <button type="button" class="bubble short" data-jump="short">ショート<small>2〜3時間</small></button>
+        <p class="txt"><b>ロング</b>でじっくり過去問と向き合い、得点を稼ぐための仕分けをして、<b>ショート</b>への橋渡しを作ります。ショートでは、これまでの学習を過去問と結びつけて固めます。1日の自己学習は、多い日で合計<b>12時間</b>ほど、どうしても通学する日でも<b>6時間</b>を目安にします。<span class="jump-hint">（ロング／ショートを押すと、下の「1日プラン」に切り替わります）</span></p>
+      </div>
+      <div class="bd-row" style="margin:6px 0 4px; align-items:center;">
+        <div class="seg-toggle" id="week-toggle" role="group" aria-label="週間プランの版">
+          <button data-ver="normal" aria-pressed="true">通常版</button>
+          <button data-ver="genneki" aria-pressed="false">現役・毎日登校版</button>
+        </div>
+      </div>
+      <p class="week-note" id="week-note"></p>
+      <div class="wk-legend">
+        <span class="lg"><span class="box long"></span>ロング（5〜6時間）</span>
+        <span class="lg"><span class="box short"></span>ショート（2〜3時間）</span>
+        <span class="lg" style="color:var(--ink-soft);">※ 日付をクリックすると、その日を強調します</span>
+      </div>
+      <div class="week-strip" id="week-strip"></div>
+      <ul class="wk-rules" id="week-rules"></ul>
+    </div>
+  </section>
+
+  <!-- ── 1日プラン ── -->
+  <section class="section" id="dayplan">
+    <div class="sec-head">
+      <span class="kicker">1日プラン</span>
+      <h2>演習内容</h2>
+      <span class="sub">1回の演習を、そのまま1トランザクションにする</span>
+    </div>
+    <div class="panelcard">
+      <div class="bd-row" style="margin:0 0 12px; align-items:center;">
+        <div class="seg-toggle" id="day-toggle" role="group" aria-label="1日プランの種類">
+          <button data-kind="long" aria-pressed="true">ロング（5〜6時間）</button>
+          <button data-kind="short" aria-pressed="false">ショート（2〜3時間）</button>
+        </div>
+      </div>
+      <div class="day-meta" id="day-meta"></div>
+      <div class="day-flow" id="day-flow"></div>
+      <div class="day-total" id="day-total"></div>
+    </div>
+  </section>
+
+  <!-- ── ビルダー ── -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="kicker">やってみる</span>
+      <h2>自分のトランザクションを組む</h2>
+      <span class="sub">トリガー → フェーズ → 報酬 を並べて、時間を合わせる</span>
+    </div>
+    <div class="panelcard builder">
+      <div class="presets" id="bd-presets">
+        <span style="font-size:12px;font-weight:800;color:var(--ink-soft);align-self:center;margin-right:2px;">下敷き：</span>
+        <button class="pbtn" data-preset="hour">1時間ルーティン</button>
+        <button class="pbtn" data-preset="weekend">土日ルーティン</button>
+        <button class="pbtn" data-preset="blank">白紙から</button>
+      </div>
+      <div class="bd-row">
+        <div class="cap-input fld" style="flex:1 1 240px;">
+          <label>⚡ トリガー（始まりの合図）</label>
+          <input type="text" id="bd-trigger" placeholder="例：メガネをかける" />
+        </div>
+        <div class="cap-input rew fld" style="flex:1 1 240px;">
+          <label>🎁 報酬（終わりのごほうび）</label>
+          <input type="text" id="bd-reward" placeholder="例：SNSを20分見る" />
+        </div>
+      </div>
+      <div class="bd-phases" id="bd-phases"></div>
+      <button class="bd-add" id="bd-add">＋ フェーズを足す</button>
+      <div class="bd-out">
+        <div class="bd-status">
+          <span class="tot">合計 <b id="bd-total">0</b> 分</span>
+          <span class="verdict ok" id="bd-verdict">まずはフェーズを組んでみてください</span>
+        </div>
+        <div class="timebar-wrap">
+          <div class="timebar" id="bd-timebar"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>教材名は原資料に載っている<b>例</b>です。各トランザクションの合計は、各フェーズの分の和と一致します（60分／60分／200分／520分）。1日プランは、ロングが演習300分（＝5時間）＋休憩で5〜6時間、ショートが演習180分（＝3時間）です。週間プランの配置は<b>一例</b>で、そのまま守るものではありません。</p>
+    <p>「トランザクション」は、途中で分けられない一続きの処理を指すデータベースの言葉です。ここでは、<b>始まり（トリガー）と終わり（報酬）ではさんだ一続きの学習</b>を1件のトランザクションと呼んでいます。</p>
+  </footer>
+
+<script src="assets/data.js"></script>
+<script>
+/* ====================================================================
+   学習のすゝめ ― トランザクション  エンジン
+   データは assets/data.js（window.TX / WEEK / DAY / PRESETS）。
+   ==================================================================== */
+"use strict";
+var TX      = window.TX || [];
+var WEEK    = window.WEEK || {};
+var DAY     = window.DAY || {};
+var PRESETS = window.PRESETS || {};
+
+/* ── アイコン ── */
+var ICON = {
+  folderClosed:'<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc0f4"/><stop offset="1" stop-color="#3f7fd6"/></linearGradient></defs><path d="M5 12c0-1.7 1.3-3 3-3h11l4 4h17c1.7 0 3 1.3 3 3v20c0 1.7-1.3 3-3 3H8c-1.7 0-3-1.3-3-3z" fill="url(#fg)"/><path d="M5 16h38v-2c0-1.7-1.3-3-3-3H23l-4-4H8c-1.7 0-3 1.3-3 3z" fill="#bcdcff" opacity=".75"/></svg>',
+  folderOpen:'<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="fo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fc9f6"/><stop offset="1" stop-color="#4a8ada"/></linearGradient></defs><path d="M5 12c0-1.7 1.3-3 3-3h11l4 4h17c1.7 0 3 1.3 3 3v4H5z" fill="#7fb2ef"/><path d="M9 20h38l-4 18c-.3 1.4-1.6 2.4-3 2.4H6c-1.7 0-3-1.3-3-3l3-15c.3-1.4 1.6-2.4 3-2.4z" fill="url(#fo)"/></svg>',
+  arrow:'<svg viewBox="0 0 26 20" aria-hidden="true"><path d="M2 10h18M15 4l7 6-7 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  pencil:'<svg viewBox="0 0 24 24" fill="none" stroke="#1f6fb2" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1L20 7a2 2 0 0 0-3-3L5 16l-1 4z"/><path d="M14 6l3 3"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="#1f6fb2" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" fill="#e9f1fa"/><path d="M9.5 13l2 2 4-4"/></svg>',
+  review:'<svg viewBox="0 0 24 24" fill="none" stroke="#1f6fb2" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-.6 3"/><path d="M20 5v6h-6"/></svg>',
+  gather:'<svg viewBox="0 0 24 24" fill="none" stroke="#1f6fb2" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>',
+  match:'<svg viewBox="0 0 24 24" fill="none" stroke="#1f6fb2" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h7v14H4zM13 5h7v14h-7z" fill="#e9f1fa"/><path d="M11 5v14"/></svg>'
+};
+
+function el(html){ var t=document.createElement("template"); t.innerHTML=String(html).trim(); return t.content.firstElementChild; }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ====================================================================
+   トランザクションの流れ図
+   ==================================================================== */
+function segColor(i, n){
+  // 青のグラデーション(濃→淡)。フェーズ番号で色を割る。
+  var stops = ["#14507f","#1f6fb2","#3f88c8","#5fa0d6","#7fb6e0"];
+  return stops[i % stops.length];
+}
+function flowHTML(u){
+  var h = '<div class="flowcard">';
+  h += '<div class="flow">';
+  // トリガー
+  h += '<div class="cap trig"><span class="cap-ic">⚡</span><span class="cap-role">TRIGGER</span><span class="cap-txt">'+esc(u.trigger)+'</span></div>';
+  // フェーズ
+  u.phases.forEach(function(p,i){
+    h += '<div class="arrow">'+ICON.arrow+'</div>';
+    h += '<div class="pchip" role="button" tabindex="0" aria-label="'+esc(p.subject)+' '+p.min+'分 の詳細" data-tx="'+u.id+'" data-i="'+i+'">'
+       +   '<div class="ph-top"><span class="ph-no">Phase 0'+(i+1)+'</span><span class="ph-min">'+p.min+'分</span></div>'
+       +   '<span class="ph-subj">'+esc(p.subject)+'</span>'
+       +   '<div class="ph-cat">'+esc(p.cat)+'</div>'
+       +   '<div class="ph-book">'+esc(p.book)+'</div>'
+       + '</div>';
+  });
+  // 報酬
+  h += '<div class="arrow">'+ICON.arrow+'</div>';
+  h += '<div class="cap rew"><span class="cap-ic">🎁</span><span class="cap-role">REWARD</span><span class="cap-txt">'+esc(u.reward)+'</span></div>';
+  h += '</div>'; // .flow
+
+  // 時間バー(比例)
+  var sum = u.phases.reduce(function(a,p){return a+p.min;},0);
+  h += '<div class="timebar-wrap"><div class="tb-caption"><span>時間の配分（フェーズごとの長さ）</span><span class="tot">合計 '+sum+'分</span></div>';
+  h += '<div class="timebar">';
+  u.phases.forEach(function(p,i){
+    var w = sum>0 ? (p.min/sum*100).toFixed(2) : 0;
+    h += '<div class="tb-seg" data-tx="'+u.id+'" data-i="'+i+'" style="flex:0 0 '+w+'%;background:'+segColor(i)+';"><span>'+p.min+'分</span></div>';
+  });
+  h += '</div></div>';
+
+  // フェーズ詳細(クリックで開く)
+  h += '<div class="ph-detail" data-tx="'+u.id+'" id="det-'+u.id+'"></div>';
+  h += '</div>'; // .flowcard
+  return h;
+}
+function phaseDetailHTML(u, i){
+  var p = u.phases[i];
+  return '<span class="dl-subj">'+esc(p.subject)+'</span><b>Phase 0'+(i+1)+'（'+p.min+'分）</b><br>'
+       + '分類：'+esc(p.cat)+' ／ 教材：<b>'+esc(p.book)+'</b><br>'
+       + 'このフェーズは「'+esc(p.subject)+'を'+p.min+'分」と決め打ちにして、始めたら'+p.min+'分きっちり手を動かします。決めた時間まで来たら、そのフェーズはいったん区切ります。残りはメモして、次の機会に回します。';
+}
+
+/* ── フォルダノードを組む ── */
+function buildTxNode(u){
+  var node = el('<div class="node collapsed"></div>');
+  var row = el('<div class="row"></div>');
+  var twist = el('<span class="twist">▾</span>');
+  var ico = el('<span class="ico">'+ICON.folderClosed+'</span>');
+  var label = el('<span class="label" role="button" tabindex="0" aria-expanded="false"></span>');
+  label.innerHTML =
+      '<span class="name">トランザクション'+u.no+'</span>'
+    + '<span class="rt">"'+esc(u.title)+'"</span>'
+    + '<span class="rt mins">'+u.total+'分／1Tx</span>'
+    + '<span class="kindnote">'+esc(u.kind)+'</span>';
+  row.appendChild(twist); row.appendChild(ico); row.appendChild(label);
+  node.appendChild(row);
+  var panel = el('<div class="panel">'+flowHTML(u)+'</div>');
+  node.appendChild(panel);
+
+  function sync(open){ ico.innerHTML = open ? ICON.folderOpen : ICON.folderClosed; label.setAttribute("aria-expanded", open ? "true" : "false"); }
+  function toggle(){ sync(node.classList.toggle("collapsed") === false); }
+  twist.addEventListener("click", function(e){ e.stopPropagation(); toggle(); });
+  label.addEventListener("click", toggle);
+  ico.addEventListener("click", function(e){ e.stopPropagation(); toggle(); });
+  label.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
+  node._open = function(){ node.classList.remove("collapsed"); sync(true); };
+  node._close = function(){ node.classList.add("collapsed"); sync(false); };
+  return node;
+}
+
+/* ── 描画: トランザクション ── */
+var app = document.getElementById("app");
+var _only = new URLSearchParams(location.search).get("only");
+(_only ? TX.filter(function(u){return u.id===_only;}) : TX).forEach(function(u){
+  var wrap = el('<div class="unit"></div>');
+  wrap.appendChild(buildTxNode(u));
+  app.appendChild(wrap);
+});
+
+/* ── フェーズのクリック / ホバー連動 ── */
+function txById(id){ for(var i=0;i<TX.length;i++){ if(TX[i].id===id) return TX[i]; } return null; }
+app.addEventListener("click", function(e){
+  var chip = e.target.closest(".pchip") || e.target.closest(".tb-seg");
+  if(!chip) return;
+  var id = chip.getAttribute("data-tx"), i = +chip.getAttribute("data-i");
+  var u = txById(id); if(!u) return;
+  var det = document.getElementById("det-"+id);
+  var chips = app.querySelectorAll('.pchip[data-tx="'+id+'"], .tb-seg[data-tx="'+id+'"]');
+  var already = chip.classList.contains("on") && det.classList.contains("on");
+  chips.forEach(function(c){ if(+c.getAttribute("data-i")===i) c.classList.toggle("on", !already); else c.classList.remove("on"); });
+  if(already){ det.classList.remove("on"); }
+  else { det.innerHTML = phaseDetailHTML(u, i); det.classList.add("on"); }
+});
+/* フェーズchip のキーボード操作(Enter/Space) */
+app.addEventListener("keydown", function(e){
+  if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("pchip")){
+    e.preventDefault(); e.target.click();
+  }
+});
+
+/* ── すべて開く / 閉じる ── */
+function allNodes(){ return app.querySelectorAll(".node"); }
+document.getElementById("btn-open").addEventListener("click", function(){ allNodes().forEach(function(n){ if(n._open) n._open(); }); });
+document.getElementById("btn-close").addEventListener("click", function(){
+  allNodes().forEach(function(n){ if(n._close) n._close(); });
+  app.querySelectorAll(".ph-detail.on").forEach(function(d){ d.classList.remove("on"); });
+  app.querySelectorAll(".on").forEach(function(c){ c.classList.remove("on"); });
+});
+
+/* 初期状態: 最初の1件を開く(見本として中身が見える)。?all で全開 */
+(function initTx(){
+  var first = app.querySelector(".node");
+  if(first && first._open) first._open();
+  if(new URLSearchParams(location.search).has("all")){ allNodes().forEach(function(n){ if(n._open) n._open(); }); }
+})();
+
+/* ====================================================================
+   週間プラン
+   ==================================================================== */
+var DOW = ["日","月","火","水","木","金","土"];
+function subjChip(c){
+  var cls = c.type === "long" ? "long" : "short";
+  return '<span class="subjchip '+cls+'">'+esc(c.subject)+'</span>';
+}
+function renderWeek(ver){
+  var W = WEEK[ver]; if(!W) return;
+  document.getElementById("week-note").textContent = W.note;
+  var strip = document.getElementById("week-strip");
+  strip.innerHTML = "";
+  W.days.forEach(function(d){
+    var dowCls = d.dow===0 ? "sun" : (d.dow===6 ? "sat" : "");
+    var chipsHTML = "";
+    d.chips.forEach(function(c){
+      chipsHTML += subjChip(c);
+      if(c.alt && c.alt.length){
+        chipsHTML += '<div class="orlab">or</div><div class="alt-wrap">'
+          + c.alt.map(function(a){return subjChip(a);}).join("") + '</div>';
+      }
+    });
+    var day = el('<div class="day"><div class="dnum '+dowCls+'">'+d.date+'</div><div class="chips">'+chipsHTML+'</div></div>');
+    day.addEventListener("click", function(){ day.classList.toggle("hot"); });
+    strip.appendChild(day);
+  });
+  var rules = document.getElementById("week-rules");
+  rules.innerHTML = W.rules.map(function(r){ return '<li>'+r+'</li>'; }).join("");
+}
+document.getElementById("week-toggle").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  this.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true":"false"); });
+  renderWeek(b.getAttribute("data-ver"));
+});
+renderWeek("normal");
+
+/* ====================================================================
+   1日プラン
+   ==================================================================== */
+function renderDay(kind){
+  var D = DAY[kind]; if(!D) return;
+  var sum = D.phases.reduce(function(a,p){return a+p.min;},0);
+  var meta = document.getElementById("day-meta");
+  meta.innerHTML = '<span class="badge span">'+esc(D.label)+'（'+esc(D.span)+'）</span>'
+    + '<span class="badge" style="background:#48566d;">例：東大英語</span>'
+    + '<span>'+esc(D.caption)+'</span>';
+  var flow = document.getElementById("day-flow");
+  flow.innerHTML = D.phases.map(function(p,i){
+    return '<div class="dphase">'
+      + '<div class="rail"><div class="dot">'+(ICON[p.icon]||"")+'</div><div class="line"></div></div>'
+      + '<div class="body"><div class="ph-h"><span class="no">Phase 0'+(i+1)+'</span><span class="mn">'+p.min+'分</span></div>'
+      + '<p class="ph-t">'+esc(p.text)+'</p></div>'
+      + '</div>';
+  }).join("");
+  document.getElementById("day-total").innerHTML =
+    esc(D.total_note) + '（Phase の合計 <b>'+sum+'分</b>）';
+}
+document.getElementById("day-toggle").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  this.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true":"false"); });
+  renderDay(b.getAttribute("data-kind"));
+});
+renderDay("long");
+
+/* 週間プラン ロング/ショート → 1日プランへ切替＆スクロール */
+function selectDay(kind){
+  var tg = document.getElementById("day-toggle");
+  tg.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x.getAttribute("data-kind")===kind ? "true":"false"); });
+  renderDay(kind);
+  var sec = document.getElementById("dayplan");
+  if(sec && sec.scrollIntoView) sec.scrollIntoView({ behavior:"smooth", block:"start" });
+}
+document.querySelectorAll('.wk-flow .bubble[data-jump]').forEach(function(b){
+  b.addEventListener("click", function(){ selectDay(b.getAttribute("data-jump")); });
+});
+
+/* イントロのドミノ・デモ(引き金 → フェーズ連鎖 → 報酬) */
+(function domino(){
+  var stage = document.getElementById("ddStage"); if(!stage) return;
+  var doms = [].slice.call(stage.querySelectorAll(".dd-domino"));
+  var reward = document.getElementById("ddReward");
+  var trg = document.getElementById("ddTrigger"), rst = document.getElementById("ddReset");
+  var timers = [];
+  function clearT(){ timers.forEach(clearTimeout); timers = []; }
+  function reset(){ clearT(); doms.forEach(function(d){ d.classList.remove("fell"); }); reward.classList.remove("pop"); trg.disabled = false; }
+  function fire(){
+    trg.disabled = true; clearT();
+    doms.forEach(function(d,i){ timers.push(setTimeout(function(){ d.classList.add("fell"); }, 200 + i*260)); });
+    timers.push(setTimeout(function(){ reward.classList.add("pop"); }, 200 + doms.length*260));
+  }
+  trg.addEventListener("click", function(){ reset(); timers.push(setTimeout(fire, 80)); });
+  rst.addEventListener("click", reset);
+})();
+
+/* ====================================================================
+   ビルダー
+   ==================================================================== */
+var bdPhases = [];
+function bdPhaseRow(p, idx){
+  var row = el('<div class="bd-ph" data-idx="'+idx+'">'
+    + '<span class="grip">P'+(idx+1)+'</span>'
+    + '<div class="fld subj"><label>教科</label><input type="text" class="p-subj" value="'+esc(p.subject||"")+'" placeholder="英語"/></div>'
+    + '<div class="fld book"><label>教材・内容</label><input type="text" class="p-book" value="'+esc(p.book||"")+'" placeholder="ネクステ"/></div>'
+    + '<div class="fld min"><label>分</label><input type="number" class="p-min" min="0" step="5" value="'+(p.min||0)+'"/></div>'
+    + '<button class="rm" title="このフェーズを消す">×</button>'
+    + '</div>');
+  row.querySelector(".p-subj").addEventListener("input", function(){ bdPhases[idx].subject=this.value; bdRecalc(); });
+  row.querySelector(".p-book").addEventListener("input", function(){ bdPhases[idx].book=this.value; bdRecalc(); });
+  row.querySelector(".p-min").addEventListener("input", function(){ bdPhases[idx].min=Math.max(0,+this.value||0); bdRecalc(); });
+  row.querySelector(".rm").addEventListener("click", function(){ bdPhases.splice(idx,1); bdRenderPhases(); });
+  return row;
+}
+function bdRenderPhases(){
+  var box = document.getElementById("bd-phases");
+  box.innerHTML = "";
+  bdPhases.forEach(function(p,i){ box.appendChild(bdPhaseRow(p,i)); });
+  bdRecalc();
+}
+function bdRecalc(){
+  var sum = bdPhases.reduce(function(a,p){return a+(+p.min||0);},0);
+  document.getElementById("bd-total").textContent = sum;
+  // タイムバー
+  var tb = document.getElementById("bd-timebar");
+  tb.innerHTML = "";
+  if(sum>0){
+    bdPhases.forEach(function(p,i){
+      if(!p.min) return;
+      var w = (p.min/sum*100).toFixed(2);
+      var seg = el('<div class="tb-seg" style="flex:0 0 '+w+'%;background:'+segColor(i)+';"><span>'+(p.subject||"　")+' '+p.min+'分</span></div>');
+      tb.appendChild(seg);
+    });
+  }
+  // 判定
+  var v = document.getElementById("bd-verdict");
+  var trg = document.getElementById("bd-trigger").value.trim();
+  var rwd = document.getElementById("bd-reward").value.trim();
+  var msgs = [];
+  if(!trg) msgs.push("トリガー");
+  if(!rwd) msgs.push("報酬");
+  if(msgs.length){
+    v.className = "verdict warn";
+    v.textContent = msgs.join("と")+"を決めると、始まりと終わりがはっきりします";
+  } else if(sum===0){
+    v.className = "verdict warn";
+    v.textContent = "フェーズに時間を入れてみてください";
+  } else {
+    var hh = Math.floor(sum/60), mm = sum%60;
+    var t = hh>0 ? (hh+"時間"+(mm?mm+"分":"")) : (mm+"分");
+    v.className = "verdict ok";
+    v.textContent = "コミット可：「"+trg+"」で始めて、"+t+"（"+sum+"分）を、途中で別のことを差し込まず一続きで走り切り、「"+rwd+"」で終わります";
+  }
+}
+function bdLoad(key){
+  var P = PRESETS[key]; if(!P) return;
+  document.getElementById("bd-trigger").value = P.trigger || "";
+  document.getElementById("bd-reward").value = P.reward || "";
+  bdPhases = P.phases.map(function(p){ return {subject:p.subject, book:p.book, min:p.min}; });
+  bdRenderPhases();
+}
+document.getElementById("bd-add").addEventListener("click", function(){ bdPhases.push({subject:"", book:"", min:30}); bdRenderPhases(); });
+document.getElementById("bd-presets").addEventListener("click", function(e){
+  var b = e.target.closest(".pbtn"); if(!b) return; bdLoad(b.getAttribute("data-preset"));
+});
+document.getElementById("bd-trigger").addEventListener("input", bdRecalc);
+document.getElementById("bd-reward").addEventListener("input", bdRecalc);
+bdLoad("hour");
+</script>
+</body>
+</html>
