@@ -34,8 +34,8 @@
       <div class="intro-grid">
         <div class="ic">
           <span class="no">1</span>
-          <b>トリガーと報酬を用意する</b>
-          <p><em>始まりの合図</em>（メガネをかける・図書館へ行く など）と、<em>終わりのごほうび</em>を先に決めます。合図があると、始めるかどうかで迷う時間を減らせます。ごほうびまで決めておくと、区切りもつけやすくなります。</p>
+          <b>トリガーを用意する（報酬は任意）</b>
+          <p><em>始まりの合図</em>（メガネをかける・図書館へ行く など）を先に決めます。合図があると、始めるかどうかで迷う時間を減らせます。<em>終わりのごほうび</em>は任意で、区切りをつけたいときに用意します。</p>
         </div>
         <div class="ic">
           <span class="no">2</span>
@@ -49,14 +49,17 @@
         </div>
       </div>
       <div class="domino-demo">
-        <p class="dd-head"><b>やってみる：</b>「引き金」を引くと、フェーズが順に倒れて報酬まで一気に流れます。<b>一度始めたら、途中で切らずにやり切る</b>——これが「不可分」の感覚です。</p>
+        <p class="dd-head"><b>やってみる：</b>手前の「引き金」を引くと、フェーズが1枚ずつ倒れて<b>完了（コミット）</b>まで一気に流れます。<b>一度始めたら、途中で切らずにやり切る</b>——これが「不可分」の感覚です。</p>
         <div class="dd-stage" id="ddStage">
           <button class="dd-trigger" id="ddTrigger" type="button"><span class="di">⚡</span>引き金を引く</button>
-          <div class="dd-track">
-            <div class="dd-domino" data-k="0"><span>英語</span></div>
-            <div class="dd-domino" data-k="1"><span>数学</span></div>
-            <div class="dd-domino" data-k="2"><span>古文</span></div>
-            <div class="dd-reward" id="ddReward" aria-hidden="true">🎁</div>
+          <div class="dd-track" aria-hidden="true">
+            <span class="dd-spark" id="ddSpark"><span class="dd-plunger"></span><span class="dd-burst"></span></span>
+            <div class="dd-domino" data-k="0"></div>
+            <div class="dd-domino" data-k="1"></div>
+            <div class="dd-domino" data-k="2"></div>
+            <div class="dd-domino" data-k="3"></div>
+            <div class="dd-domino" data-k="4"></div>
+            <div class="dd-goal" id="ddReward"><span class="dg-mark">✓</span><span class="dg-lab">完了</span></div>
           </div>
           <button class="dd-reset" id="ddReset" type="button">リセット</button>
         </div>
@@ -152,8 +155,8 @@
           <input type="text" id="bd-trigger" placeholder="例：メガネをかける" />
         </div>
         <div class="cap-input rew fld" style="flex:1 1 240px;">
-          <label>🎁 報酬（終わりのごほうび）</label>
-          <input type="text" id="bd-reward" placeholder="例：SNSを20分見る" />
+          <label>🎁 報酬（任意・終わりのごほうび）</label>
+          <input type="text" id="bd-reward" placeholder="任意（例：SNSを20分見る）" />
         </div>
       </div>
       <div class="bd-phases" id="bd-phases"></div>
@@ -214,7 +217,7 @@ function flowHTML(u){
   var h = '<div class="flowcard">';
   h += '<div class="flow">';
   // トリガー
-  h += '<div class="cap trig"><span class="cap-ic">⚡</span><span class="cap-role">TRIGGER</span><span class="cap-txt">'+esc(u.trigger)+'</span></div>';
+  h += '<div class="cap trig"><span class="cap-ic">⚡</span><span class="cap-role">TRIGGER</span><span class="cap-txt">'+esc(u.trigger)+'</span>'+(u.trigger_note?'<span class="cap-note">'+esc(u.trigger_note)+'</span>':'')+'</div>';
   // フェーズ
   u.phases.forEach(function(p,i){
     h += '<div class="arrow">'+ICON.arrow+'</div>';
@@ -225,9 +228,11 @@ function flowHTML(u){
        +   '<div class="ph-book">'+esc(p.book)+'</div>'
        + '</div>';
   });
-  // 報酬
-  h += '<div class="arrow">'+ICON.arrow+'</div>';
-  h += '<div class="cap rew"><span class="cap-ic">🎁</span><span class="cap-role">REWARD</span><span class="cap-txt">'+esc(u.reward)+'</span></div>';
+  // 報酬（任意。無ければ最後のフェーズで終わる）
+  if(u.reward){
+    h += '<div class="arrow">'+ICON.arrow+'</div>';
+    h += '<div class="cap rew"><span class="cap-ic">🎁</span><span class="cap-role">REWARD</span><span class="cap-txt">'+esc(u.reward)+'</span><span class="cap-note">任意</span></div>';
+  }
   h += '</div>'; // .flow
 
   // 時間バー(比例)
@@ -403,19 +408,21 @@ document.querySelectorAll('.wk-flow .bubble[data-jump]').forEach(function(b){
   b.addEventListener("click", function(){ selectDay(b.getAttribute("data-jump")); });
 });
 
-/* イントロのドミノ・デモ(引き金 → フェーズ連鎖 → 報酬) */
+/* イントロのドミノ・デモ(手前の引き金 → フェーズ連鎖 → 完了) */
 (function domino(){
   var stage = document.getElementById("ddStage"); if(!stage) return;
   var doms = [].slice.call(stage.querySelectorAll(".dd-domino"));
-  var reward = document.getElementById("ddReward");
+  var goal = document.getElementById("ddReward");
+  var spark = document.getElementById("ddSpark");
   var trg = document.getElementById("ddTrigger"), rst = document.getElementById("ddReset");
   var timers = [];
   function clearT(){ timers.forEach(clearTimeout); timers = []; }
-  function reset(){ clearT(); doms.forEach(function(d){ d.classList.remove("fell"); }); reward.classList.remove("pop"); trg.disabled = false; }
+  function reset(){ clearT(); doms.forEach(function(d){ d.classList.remove("fell"); }); goal.classList.remove("pop"); if(spark) spark.classList.remove("flash"); trg.disabled = false; }
   function fire(){
     trg.disabled = true; clearT();
-    doms.forEach(function(d,i){ timers.push(setTimeout(function(){ d.classList.add("fell"); }, 200 + i*260)); });
-    timers.push(setTimeout(function(){ reward.classList.add("pop"); }, 200 + doms.length*260));
+    if(spark){ spark.classList.add("flash"); }
+    doms.forEach(function(d,i){ timers.push(setTimeout(function(){ d.classList.add("fell"); }, 260 + i*230)); });
+    timers.push(setTimeout(function(){ goal.classList.add("pop"); }, 260 + doms.length*230));
   }
   trg.addEventListener("click", function(){ reset(); timers.push(setTimeout(fire, 80)); });
   rst.addEventListener("click", reset);
@@ -429,7 +436,7 @@ function bdPhaseRow(p, idx){
   var row = el('<div class="bd-ph" data-idx="'+idx+'">'
     + '<span class="grip">P'+(idx+1)+'</span>'
     + '<div class="fld subj"><label>教科</label><input type="text" class="p-subj" value="'+esc(p.subject||"")+'" placeholder="英語"/></div>'
-    + '<div class="fld book"><label>教材・内容</label><input type="text" class="p-book" value="'+esc(p.book||"")+'" placeholder="ネクステ"/></div>'
+    + '<div class="fld book"><label>教材・内容</label><input type="text" class="p-book" value="'+esc(p.book||"")+'" placeholder="頻出英文法・語法問題1000"/></div>'
     + '<div class="fld min"><label>分</label><input type="number" class="p-min" min="0" step="5" value="'+(p.min||0)+'"/></div>'
     + '<button class="rm" title="このフェーズを消す">×</button>'
     + '</div>');
@@ -463,12 +470,9 @@ function bdRecalc(){
   var v = document.getElementById("bd-verdict");
   var trg = document.getElementById("bd-trigger").value.trim();
   var rwd = document.getElementById("bd-reward").value.trim();
-  var msgs = [];
-  if(!trg) msgs.push("トリガー");
-  if(!rwd) msgs.push("報酬");
-  if(msgs.length){
+  if(!trg){
     v.className = "verdict warn";
-    v.textContent = msgs.join("と")+"を決めると、始まりと終わりがはっきりします";
+    v.textContent = "トリガー（始まりの合図）を決めると、迷わず始められます";
   } else if(sum===0){
     v.className = "verdict warn";
     v.textContent = "フェーズに時間を入れてみてください";
@@ -476,7 +480,8 @@ function bdRecalc(){
     var hh = Math.floor(sum/60), mm = sum%60;
     var t = hh>0 ? (hh+"時間"+(mm?mm+"分":"")) : (mm+"分");
     v.className = "verdict ok";
-    v.textContent = "コミット可：「"+trg+"」で始めて、"+t+"（"+sum+"分）を、途中で別のことを差し込まず一続きで走り切り、「"+rwd+"」で終わります";
+    v.textContent = "コミット可：「"+trg+"」で始めて、"+t+"（"+sum+"分）を、途中で別のことを差し込まず一続きで走り切ります"
+      + (rwd ? "。最後に「"+rwd+"」で区切ります" : "（報酬は任意です）");
   }
 }
 function bdLoad(key){

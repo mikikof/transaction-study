@@ -22,9 +22,10 @@ window.TX = [
     kind: "平日・すきま",
     total: 60,
     trigger: "メガネをかける",
+    trigger_note: "身につけるものを合図に",
     reward: "SNSを20分見る",
     phases: [
-      { subject: "英語", cat: "英文法",   book: "ネクステ",           min: 20 },
+      { subject: "英語", cat: "英文法",   book: "頻出英文法・語法問題1000",           min: 20 },
       { subject: "数学", cat: "演習問題", book: "新スタンダード演習", min: 30 },
       { subject: "古文", cat: "古文単語", book: "頻出古文単語400",   min: 10 }
     ]
@@ -36,9 +37,10 @@ window.TX = [
     kind: "平日・すきま",
     total: 60,
     trigger: "ヤクルト1000を飲む",
+    trigger_note: "口にするものを合図に",
     reward: "寝る",
     phases: [
-      { subject: "英語", cat: "英文法",   book: "ネクステ",         min: 40 },
+      { subject: "英語", cat: "英文法",   book: "頻出英文法・語法問題1000",         min: 40 },
       { subject: "古文", cat: "古文文法", book: "古文上達 基礎編", min: 20 }
     ]
   },
@@ -49,6 +51,7 @@ window.TX = [
     kind: "休日・まとまった時間",
     total: 200,
     trigger: "図書館へ行く",
+    trigger_note: "場所・席を合図に",
     reward: "夜ご飯",
     phases: [
       { subject: "化学",   cat: "共テ対策", book: "基礎問題精講",         min: 75 },
@@ -63,6 +66,7 @@ window.TX = [
     kind: "入試本番の丸一日",
     total: 520,
     trigger: "メガネをかける",
+    trigger_note: "身につけるものを合図に",
     reward: "スマホを見る",
     phases: [
       { subject: "国語", cat: "過去問演習", book: "東大過去問演習（古文）／漢文道場",  min: 100 },
@@ -153,7 +157,7 @@ window.PRESETS = {
     trigger: "メガネをかける",
     reward: "SNSを20分見る",
     phases: [
-      { subject: "英語", book: "ネクステ",           min: 20 },
+      { subject: "英語", book: "頻出英文法・語法問題1000",           min: 20 },
       { subject: "数学", book: "新スタンダード演習", min: 30 },
       { subject: "古文", book: "頻出古文単語400",   min: 10 }
     ]

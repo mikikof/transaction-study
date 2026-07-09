@@ -124,13 +124,14 @@ h1.title .accent{ color:var(--tx); }
 .cap .cap-ic{ font-size:22px; line-height:1; }
 .cap .cap-role{ font-size:11px; font-weight:800; letter-spacing:.05em; }
 .cap .cap-txt{ font-size:12.5px; font-weight:700; line-height:1.4; }
+.cap .cap-note{ font-size:10px; font-weight:700; opacity:.82; line-height:1.35; margin-top:1px; }
 .cap.trig{ background:var(--trig-bg); border:1.6px solid var(--trig); color:var(--trig-deep); }
 .cap.rew{ background:var(--rew-bg); border:1.6px solid var(--rew); color:var(--rew-deep); }
 .cap.trig .cap-role{ color:var(--trig-deep); }
 .cap.rew .cap-role{ color:var(--rew-deep); }
 .arrow{ flex:0 0 auto; align-self:center; width:30px; height:26px; color:var(--tx); display:flex; align-items:center; justify-content:center; }
 .arrow svg{ width:26px; height:20px; }
-.pchip{ flex:1 1 128px; min-width:120px; background:var(--tx-bg); border:1.6px solid var(--tx); border-radius:12px; padding:9px 11px 10px; cursor:pointer; transition:transform .14s ease, box-shadow .14s ease; position:relative; }
+.pchip{ flex:1 1 128px; min-width:120px; max-width:230px; background:var(--tx-bg); border:1.6px solid var(--tx); border-radius:12px; padding:9px 11px 10px; cursor:pointer; transition:transform .14s ease, box-shadow .14s ease; position:relative; }
 .pchip:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(31,111,178,.18); }
 .pchip.on{ box-shadow:0 0 0 3px rgba(31,111,178,.28); transform:translateY(-2px); }
 .pchip .ph-top{ display:flex; align-items:baseline; justify-content:space-between; gap:6px; }
@@ -252,16 +253,27 @@ h1.title .accent{ color:var(--tx); }
 .dd-trigger .di{ font-size:17px; }
 .dd-trigger:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 5px 14px rgba(239,154,30,.28); }
 .dd-trigger:disabled{ opacity:.55; cursor:default; }
-.dd-track{ flex:1 1 260px; display:flex; align-items:flex-end; gap:18px; min-height:82px; padding:0 6px; min-width:240px; }
-.dd-domino{ position:relative; width:20px; height:62px; background:linear-gradient(#3f88c8,#1f6fb2); border-radius:4px; box-shadow:2px 3px 6px rgba(20,40,60,.22); transform-origin:bottom right; transition:transform .32s cubic-bezier(.5,0,.4,1); }
-.dd-domino span{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:#fff; font-size:10.5px; font-weight:800; white-space:nowrap; }
-.dd-domino.fell{ transform:rotate(78deg); }
-.dd-reward{ font-size:30px; opacity:.32; filter:grayscale(.5); transition:transform .3s ease, opacity .3s ease, filter .3s ease; }
-.dd-reward.pop{ opacity:1; filter:none; transform:scale(1.18); animation:dd-bounce .5s ease; }
-@keyframes dd-bounce{ 0%{transform:scale(.6);} 55%{transform:scale(1.28);} 100%{transform:scale(1.18);} }
+.dd-track{ flex:1 1 300px; display:flex; align-items:flex-end; gap:22px; min-height:92px; padding:0 6px 2px; min-width:270px; }
+/* 手前の引き金(はじく棒 + スパーク) */
+.dd-spark{ position:relative; flex:0 0 auto; width:22px; height:60px; margin-right:2px; }
+.dd-spark .dd-plunger{ position:absolute; left:0; bottom:0; width:12px; height:56px; border-radius:4px 4px 3px 3px; background:linear-gradient(#8a97a8,#5c6b80); box-shadow:1px 2px 4px rgba(20,40,60,.28); transform-origin:bottom center; }
+.dd-spark.flash .dd-plunger{ animation:dd-flick .5s ease; }
+@keyframes dd-flick{ 0%{transform:rotate(0);} 35%{transform:rotate(17deg);} 100%{transform:rotate(0);} }
+.dd-spark .dd-burst{ position:absolute; right:-15px; top:12px; width:30px; height:30px; transform:scale(0); opacity:0; background:var(--trig); clip-path:polygon(50% 0,60% 34%,98% 35%,68% 57%,79% 92%,50% 68%,21% 92%,32% 57%,2% 35%,40% 34%); }
+.dd-spark.flash .dd-burst{ animation:dd-burst .55s ease; }
+@keyframes dd-burst{ 0%{opacity:0;transform:scale(.2) rotate(0);} 28%{opacity:1;transform:scale(1.1) rotate(18deg);} 100%{opacity:0;transform:scale(.85) rotate(38deg);} }
+/* ドミノ(無地・5枚・立体) */
+.dd-domino{ position:relative; flex:0 0 auto; width:19px; height:62px; border-radius:4px; background:linear-gradient(102deg,#63a0d6 0%,#2f7bbd 55%,#245f9c 100%); box-shadow:2px 3px 6px rgba(20,40,60,.3), inset 2px 0 0 rgba(255,255,255,.28), inset -2.5px 0 0 rgba(0,0,0,.14); transform-origin:bottom right; transition:transform .34s cubic-bezier(.45,0,.32,1); }
+.dd-domino.fell{ transform:rotate(70deg); }
+/* 完了(コミット)ゴール */
+.dd-goal{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:3px; margin-left:10px; opacity:.38; filter:grayscale(.55); transition:opacity .3s ease, filter .3s ease, transform .3s ease; }
+.dd-goal .dg-mark{ width:38px; height:38px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:21px; font-weight:800; box-shadow:0 3px 9px rgba(95,163,67,.32); }
+.dd-goal .dg-lab{ font-size:11px; font-weight:800; color:#3f7a29; }
+.dd-goal.pop{ opacity:1; filter:none; animation:dd-goalpop .55s ease; }
+@keyframes dd-goalpop{ 0%{transform:scale(.55);} 55%{transform:scale(1.18);} 100%{transform:scale(1);} }
 .dd-reset{ appearance:none; border:1.5px solid #c6d3cb; background:#fff; color:var(--ink-soft); font:inherit; font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; }
 .dd-reset:hover{ border-color:var(--tx); color:var(--tx); }
-@media (max-width:680px){ .dd-track{ gap:13px; } .dd-domino{ width:17px; height:54px; } }
+@media (max-width:680px){ .dd-track{ gap:18px; } .dd-domino{ width:17px; height:54px; } .dd-spark{ height:52px; } .dd-spark .dd-plunger{ height:48px; } }
 
 /* ───────── フォーカスリング(キーボード操作) ───────── */
 .label:focus-visible, .pchip:focus-visible, .bubble:focus-visible, .btn:focus-visible,
