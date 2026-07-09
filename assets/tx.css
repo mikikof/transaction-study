@@ -118,8 +118,8 @@ h1.title .accent{ color:var(--tx); }
 @media (max-width:680px){ .panel{ margin-left:12px; } }
 
 /* ───────── トランザクションの流れ図 ───────── */
-.flowcard{ background:#fff; border:1.6px solid var(--card-line); border-radius:13px; box-shadow:var(--shadow); padding:16px 16px 14px; max-width:900px; }
-.flow{ display:flex; align-items:stretch; gap:0; flex-wrap:wrap; }
+.flowcard{ background:#fff; border:1.6px solid var(--card-line); border-radius:13px; box-shadow:var(--shadow); padding:16px 16px 14px; max-width:980px; }
+.flow{ display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; }
 .cap{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; min-width:104px; padding:11px 10px; border-radius:12px; text-align:center; }
 .cap .cap-ic{ font-size:22px; line-height:1; }
 .cap .cap-role{ font-size:11px; font-weight:800; letter-spacing:.05em; }
@@ -131,12 +131,12 @@ h1.title .accent{ color:var(--tx); }
 .cap.rew .cap-role{ color:var(--rew-deep); }
 .arrow{ flex:0 0 auto; align-self:center; width:30px; height:26px; color:var(--tx); display:flex; align-items:center; justify-content:center; }
 .arrow svg{ width:26px; height:20px; }
-.pchip{ flex:1 1 128px; min-width:120px; max-width:230px; background:var(--tx-bg); border:1.6px solid var(--tx); border-radius:12px; padding:9px 11px 10px; cursor:pointer; transition:transform .14s ease, box-shadow .14s ease; position:relative; }
+.pchip{ flex:1 1 128px; min-width:0; background:var(--tx-bg); border:1.6px solid var(--tx); border-radius:12px; padding:9px 10px 10px; cursor:pointer; transition:transform .14s ease, box-shadow .14s ease; position:relative; }
 .pchip:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(31,111,178,.18); }
 .pchip.on{ box-shadow:0 0 0 3px rgba(31,111,178,.28); transform:translateY(-2px); }
-.pchip .ph-top{ display:flex; align-items:baseline; justify-content:space-between; gap:6px; }
-.pchip .ph-no{ font-size:11.5px; font-weight:800; color:var(--tx-deep); letter-spacing:.03em; }
-.pchip .ph-min{ font-size:13px; font-weight:800; color:var(--tx-deep); }
+.pchip .ph-top{ display:flex; align-items:baseline; justify-content:space-between; gap:4px 6px; flex-wrap:wrap; }
+.pchip .ph-no{ font-size:11.5px; font-weight:800; color:var(--tx-deep); letter-spacing:.03em; white-space:nowrap; }
+.pchip .ph-min{ font-size:13px; font-weight:800; color:var(--tx-deep); white-space:nowrap; }
 .pchip .ph-subj{ display:inline-block; margin:6px 0 5px; background:var(--subj); color:#fff; font-weight:800; font-size:13px; border-radius:7px; padding:3px 10px; }
 .pchip .ph-book{ font-size:12px; color:var(--ink); line-height:1.5; }
 .pchip .ph-cat{ font-size:11px; color:var(--ink-soft); font-weight:700; }
@@ -291,7 +291,7 @@ h1.title .accent{ color:var(--tx); }
   h1.title{ font-size:23px; letter-spacing:0; }
   .topbar{ padding:26px 20px 6px; }
   .sheet{ padding:0 14px 34px; }
-  .flow{ gap:8px; }
+  .flow{ gap:8px; flex-wrap:wrap; }
   .arrow{ transform:rotate(90deg); width:100%; }
   .cap{ min-width:0; width:100%; }
   .pchip{ flex:1 1 100%; }
