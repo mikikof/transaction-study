@@ -84,6 +84,26 @@
     </div>
   </div>
 
+  <!-- ── 1日の組み込み例 ── -->
+  <section class="section" id="daymodel">
+    <div class="sec-head">
+      <span class="kicker">1日の組み込み例</span>
+      <h2>学校の合間に入れる</h2>
+      <span class="sub">起床を起点に、Tx と Short Tx を差し込む</span>
+    </div>
+    <div class="panelcard">
+      <div class="bd-row" style="margin:0 0 10px; align-items:center;">
+        <div class="seg-toggle" id="dm-toggle" role="group" aria-label="平日／休日">
+          <button data-day="weekday" aria-pressed="true">平日</button>
+          <button data-day="holiday" aria-pressed="false">休日</button>
+        </div>
+      </div>
+      <p class="dm-note" id="dmNote"></p>
+      <div class="dm-timeline" id="dmTimeline"></div>
+      <div class="dm-summary" id="dmSummary"></div>
+    </div>
+  </section>
+
   <!-- ── 週間プラン ── -->
   <section class="section">
     <div class="sec-head">
@@ -395,6 +415,41 @@ document.getElementById("day-toggle").addEventListener("click", function(e){
   renderDay(b.getAttribute("data-kind"));
 });
 renderDay("long");
+
+/* ====================================================================
+   1日の組み込み例（モデルケース タイムライン）
+   ==================================================================== */
+var DAYMODEL = window.DAYMODEL || {};
+function renderDayModel(key){
+  var M = DAYMODEL[key]; if(!M) return;
+  document.getElementById("dmNote").innerHTML = '🔔 <b>'+esc(M.wake)+' 起床</b>（毎日固定・1日の起点）。'+esc(M.note);
+  var tl = document.getElementById("dmTimeline");
+  tl.innerHTML = M.blocks.map(function(b){
+    var h = Math.max(Math.round(b.min*0.5), 44);
+    var isStudy = (b.type==="tx" || b.type==="short");
+    var badge = b.badge ? '<span class="dm-badge">'+esc(b.badge)+'</span>' : '';
+    var mins = isStudy ? '<span class="dm-min">'+b.min+'分</span>' : '';
+    var sub = b.sub ? '<div class="dm-sub">'+esc(b.sub)+'</div>' : '';
+    return '<div class="dm-block dm-'+b.type+'" style="min-height:'+h+'px">'
+      + '<div class="dm-time"><span>'+esc(b.s)+'</span><span class="dm-arr">↓</span><span>'+esc(b.e)+'</span></div>'
+      + '<div class="dm-body"><div class="dm-toprow">'+badge+'<span class="dm-label">'+esc(b.label)+'</span>'+mins+'</div>'+sub+'</div>'
+      + '</div>';
+  }).join("");
+  var txN=0, txMin=0, shN=0, shMin=0;
+  M.blocks.forEach(function(b){ if(b.type==="tx"){txN++;txMin+=b.min;} else if(b.type==="short"){shN++;shMin+=b.min;} });
+  var total = txMin+shMin, hh=Math.floor(total/60), mm=total%60;
+  var t = (hh>0?hh+"時間":"")+(mm?mm+"分":"");
+  document.getElementById("dmSummary").innerHTML =
+      'この日の自己学習：<b>Tx '+txN+'本（'+txMin+'分）＋ Short Tx '+shN+'本（'+shMin+'分）</b> ＝ '
+    + '<b class="st">合計'+t+'</b>（'+total+'分）。'
+    + (key==="weekday" ? '学校がある日でも、朝・通学・帰宅後・就寝前で積み上がります。' : '空いた1日は Tx を主役に、合間に短い休憩をはさみます。');
+}
+document.getElementById("dm-toggle").addEventListener("click", function(e){
+  var b=e.target.closest("button"); if(!b) return;
+  this.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+  renderDayModel(b.getAttribute("data-day"));
+});
+renderDayModel("weekday");
 
 /* 週間プラン ロング/ショート → 1日プランへ切替＆スクロール */
 function selectDay(kind){

@@ -181,3 +181,46 @@ window.PRESETS = {
     ]
   }
 };
+
+/* ── 1日の組み込み例（モデルケース） ──────────────────────────────────────
+   起床を固定の起点に、Tx（フル）と Short Tx を生活の合間に差し込む。
+   type: tx=フルTx / short=ショートTx / fixed=学校など固定枠 / life=生活 / sleep=就寝
+   min はブロックの長さ（分）。tx と short の分の和が「その日の自己学習」。       */
+window.DAYMODEL = {
+  weekday: {
+    label: "平日",
+    wake: "4:00",
+    note: "朝4時起床を固定の起点に。朝は〈設計→実行〉のフル・トランザクション、通学の往復は Short Tx、帰宅後は長めのフル・トランザクション、寝る前に総仕上げを1本。",
+    blocks: [
+      { s:"4:00",  e:"4:15",  min:15,  type:"tx",    badge:"設計",     label:"今日の1セットを組む", sub:"科目の順番と時間を決める" },
+      { s:"4:15",  e:"6:15",  min:120, type:"tx",    badge:"Tx①",      label:"朝のフル・トランザクション", sub:"組んだ1セットを一続きで実行" },
+      { s:"6:15",  e:"6:30",  min:15,  type:"life",  badge:"",         label:"朝ごはん・支度", sub:"" },
+      { s:"6:40",  e:"8:10",  min:90,  type:"short", badge:"Short Tx", label:"登校時間（往路）", sub:"単語・一問一答を耳と手で" },
+      { s:"8:10",  e:"16:00", min:470, type:"fixed", badge:"固定",     label:"学校", sub:"" },
+      { s:"16:00", e:"17:30", min:90,  type:"short", badge:"Short Tx", label:"下校時間（復路）", sub:"往路の復習＋今日の授業の整理" },
+      { s:"17:30", e:"20:00", min:150, type:"tx",    badge:"Tx②",      label:"帰宅後のフル・トランザクション", sub:"学校の復習＋弱点の仕分けを一続きで" },
+      { s:"20:00", e:"22:00", min:120, type:"life",  badge:"",         label:"夕食・入浴・休憩", sub:"" },
+      { s:"22:00", e:"23:00", min:60,  type:"tx",    badge:"Tx③",      label:"寝る前に一度", sub:"今日の総仕上げを一続きで" },
+      { s:"23:00", e:"4:00",  min:300, type:"sleep", badge:"",         label:"就寝（5時間）", sub:"" }
+    ]
+  },
+  holiday: {
+    label: "休日",
+    wake: "4:00",
+    note: "学校がない日は Tx が主役。長め（土日ルーティン）と短めを織り交ぜ、多い日は合計12時間ほど。",
+    blocks: [
+      { s:"4:00",  e:"6:00",  min:120, type:"tx",    badge:"Tx①",      label:"朝いちのフル・トランザクション", sub:"頭が冴えている時間に" },
+      { s:"6:00",  e:"6:30",  min:30,  type:"life",  badge:"",         label:"朝食", sub:"" },
+      { s:"6:30",  e:"9:30",  min:180, type:"tx",    badge:"Tx②",      label:"土日ルーティン（ロング）", sub:"過去問とじっくり向き合う" },
+      { s:"9:30",  e:"10:00", min:30,  type:"life",  badge:"",         label:"休憩", sub:"" },
+      { s:"10:00", e:"12:30", min:150, type:"tx",    badge:"Tx③",      label:"フル・トランザクション", sub:"" },
+      { s:"12:30", e:"13:30", min:60,  type:"life",  badge:"",         label:"昼食", sub:"" },
+      { s:"13:30", e:"16:30", min:180, type:"tx",    badge:"Tx④",      label:"フル・トランザクション", sub:"" },
+      { s:"16:30", e:"18:00", min:90,  type:"life",  badge:"",         label:"休憩・軽い運動", sub:"" },
+      { s:"18:00", e:"20:00", min:120, type:"tx",    badge:"Tx⑤",      label:"夕方のトランザクション", sub:"" },
+      { s:"20:00", e:"21:30", min:90,  type:"life",  badge:"",         label:"夕食・入浴", sub:"" },
+      { s:"21:30", e:"22:00", min:30,  type:"short", badge:"Short Tx", label:"寝る前の総ざらい", sub:"" },
+      { s:"22:00", e:"4:00",  min:360, type:"sleep", badge:"",         label:"就寝（6時間）", sub:"" }
+    ]
+  }
+};
