@@ -215,6 +215,37 @@ h1.title .accent{ color:var(--tx); }
 .day-meta .badge{ background:var(--head); color:#fff; border-radius:8px; padding:3px 11px; font-weight:800; }
 .day-meta .badge.span{ background:var(--tx); }
 
+/* ───────── 1日の組み込み例（モデルケース タイムライン） ───────── */
+.dm-note{ font-size:12.8px; color:var(--ink-soft); margin:4px 0 14px; line-height:1.75; }
+.dm-note b{ color:var(--trig-deep); }
+.dm-timeline{ position:relative; }
+.dm-block{ display:flex; align-items:stretch; border-radius:12px; margin-bottom:7px; box-shadow:var(--shadow-soft); transition:transform .14s ease, box-shadow .14s ease; }
+.dm-block:hover{ transform:translateX(3px); box-shadow:var(--shadow); }
+.dm-time{ flex:0 0 78px; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; padding:0 12px 0 2px; font-size:12.5px; font-weight:800; color:var(--ink-soft); font-variant-numeric:tabular-nums; line-height:1.2; }
+.dm-time .dm-arr{ color:#c0c8ce; font-size:10px; margin:1px 0; }
+.dm-body{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; padding:9px 15px; border-radius:12px; min-width:0; }
+.dm-toprow{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+.dm-badge{ flex:0 0 auto; font-size:11px; font-weight:800; letter-spacing:.02em; border-radius:6px; padding:2px 9px; }
+.dm-label{ font-weight:800; font-size:14.5px; }
+.dm-min{ margin-left:auto; font-size:13.5px; font-weight:800; font-variant-numeric:tabular-nums; }
+.dm-sub{ font-size:12px; margin-top:3px; line-height:1.55; opacity:.92; }
+/* 種別ごとの配色 */
+.dm-block.dm-tx    .dm-body{ background:var(--tx); color:#fff; }
+.dm-block.dm-tx    .dm-badge{ background:rgba(255,255,255,.22); color:#fff; }
+.dm-block.dm-short .dm-body{ background:var(--short); color:#5a1225; border:1.6px solid var(--short-line); }
+.dm-block.dm-short .dm-badge{ background:var(--short-line); color:#fff; }
+.dm-block.dm-fixed .dm-body{ background:#e6ecf3; color:var(--head); }
+.dm-block.dm-fixed .dm-badge{ background:#c2ccd9; color:var(--head); }
+.dm-block.dm-fixed .dm-label{ font-weight:700; }
+.dm-block.dm-life  .dm-body{ background:#f1f4f1; color:var(--ink-soft); }
+.dm-block.dm-life  .dm-label{ font-weight:700; }
+.dm-block.dm-sleep .dm-body{ background:#3a4657; color:#fff; }
+.dm-block.dm-sleep .dm-label{ font-weight:700; }
+.dm-summary{ margin:13px 0 0; background:var(--tx-bg); border:1px solid #cfe0f0; border-radius:12px; padding:13px 16px; font-size:13px; color:var(--head); line-height:1.75; }
+.dm-summary b{ color:var(--tx-deep); font-weight:800; }
+.dm-summary .st{ font-size:20px; }
+@media (max-width:560px){ .dm-time{ flex-basis:62px; font-size:11.5px; padding-right:9px; } .dm-label{ font-size:13.5px; } }
+
 /* ───────── ビルダー ───────── */
 .builder .bd-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin:0 0 12px; }
 .builder .presets{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px; }
